@@ -1,6 +1,7 @@
 from asyncio import events
 from multiprocessing import Event
 import time
+from turtle import colormode
 from PyQt5.QtCore import Qt
 import os
 from PyQt5 import QtGui
@@ -8,9 +9,12 @@ from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QLabel, QVBoxLay
 from pyautogui import click
 from pytube import *
 import sys
-
+import colorama
+from colorama import init, Fore
+from colorama import Back
+from colorama import Style
 #elements
-
+init(autoreset=True)
 #elements
 
 class Window(QWidget):
@@ -38,22 +42,25 @@ class Window(QWidget):
         self.setLayout(v_line)
 
         def start(self):
-            label_3.setText("Loading")
-            link = text_file1.text()
-            vid = YouTube(link)
-            print("Downloading ", vid.title)
-            print("Views: ", vid.views)
-            print("Length: ", vid.length, "seconds")
-            print("Description: ", vid.description)
-            print("Ratings: ", vid.rating)
-            vid_download = vid.streams.get_by_itag('22')
-            vid_download.download(text_file2.text())
-            print("completed")
-            text_file1.clear()
-            text_file2.clear()
-            label_3.setText("Finish!")
-            if click():
-                label_3.setText("Please write the url of vidio")
+            try:
+                label_3.setText("Loading")
+                link = text_file1.text()
+                vid = YouTube(link)
+                print("Downloading ", vid.title)
+                print("Views: ", vid.views)
+                print("Length: ", vid.length, "seconds")
+                print("Description: ", vid.description)
+                print("Ratings: ", vid.rating)
+                vid_download = vid.streams.get_by_itag('22')
+                vid_download.download(text_file2.text())
+                print("completed")
+                text_file1.clear()
+                text_file2.clear()
+                label_3.setText("Finish!")
+                if text_file1 or text_file2 != "":
+                    label_3.setText("Please write the url of vidio")
+            except:
+                label_3.setText("Error")
         button_1.clicked.connect(start)
         
 app = QApplication([])
